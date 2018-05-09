@@ -9,7 +9,7 @@
     "noLib": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "sourceMap": false
+    "sourceMap": true
   },
   "include": [
     "migrate.ts",

@@ -24,12 +24,24 @@ export class UserService implements IUserService {
     }
 
     public async create(user: IUser): Promise<User> {
-        return await this.sequelizeInstance.transaction(async transaction => {
+        let response; 
+        try {
+            response = await this.sequelizeInstance.transaction(async transaction => {
+                return await this.userRepository.create<User>(user, {
+                    returning: true,
+                    transaction,
+                });
+            });
+        }catch(e) {
+            console.log("Error:", e);
+        }
+        return response;
+        /*return await this.sequelizeInstance.transaction(async transaction => {
             return await this.userRepository.create<User>(user, {
                 returning: true,
                 transaction,
             });
-        });
+        });*/
     }
 
     public async update(id: number, newValue: IUser): Promise<User | null> {

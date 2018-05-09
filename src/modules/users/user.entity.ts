@@ -20,11 +20,9 @@ const tableOptions: IDefineOptions = { timestamp: true, tableName: 'users' } as 
 @Table(tableOptions)
 export class User extends Model<User> {
     @Column({
-        type: DataType.NUMERIC,
-        allowNull: false,
+        type: DataType.INTEGER,
         autoIncrement: true,
-        unique: true,
-        primaryKey: true,
+        primaryKey: true
     })
     public id: number;
 
@@ -52,7 +50,7 @@ export class User extends Model<User> {
                     next(error);
                 }
                 next();
-            },
+            }
         },
     })
     public email: string;
@@ -87,7 +85,6 @@ export class User extends Model<User> {
     @BeforeCreate
     public static async hashPassword(user: User, options: any) {
         if (!options.transaction) throw new Error('Missing transaction.');
-
         user.password = crypto.createHmac('sha256', user.password).digest('hex');
     }
 }
