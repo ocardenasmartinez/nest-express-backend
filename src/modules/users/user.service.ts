@@ -12,7 +12,13 @@ export class UserService implements IUserService {
                 @Inject('SequelizeInstance') private readonly sequelizeInstance) { }
 
     public async findAll(): Promise<Array<User>> {
-        return await this.userRepository.findAll<User>();
+        let repo;
+        try {
+          repo = await this.userRepository.findAll<User>();
+        }catch(e){
+          console.log("e: ", e);
+        }
+        return repo;
     }
 
     public async findOne(options: Object): Promise<User | null> {
@@ -24,7 +30,7 @@ export class UserService implements IUserService {
     }
 
     public async create(user: IUser): Promise<User> {
-        let response; 
+        let response;
         try {
             response = await this.sequelizeInstance.transaction(async transaction => {
                 return await this.userRepository.create<User>(user, {
